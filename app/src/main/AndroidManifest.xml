@@ -27,6 +27,7 @@
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -38,8 +39,10 @@
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
+
                 <!-- This line is used for implicit intent -->
                 <action android:name="com.example.greetingcard.ACTION_OPEN_SECOND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -51,6 +54,10 @@
             android:exported="false"
             android:foregroundServiceType="specialUse" />
 
+        <activity
+            android:name=".ThirdActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

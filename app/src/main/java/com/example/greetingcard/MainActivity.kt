@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.example.greetingcard.ui.theme.GreetingCardTheme
-import com.example.greetingcard.second_activity
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,12 +83,13 @@ fun Greeting(name: String, id: Int, modifier: Modifier = Modifier) {
         val receiver = MyBroadcastReceiver()
         val filter = IntentFilter(customAction)
 
-        // Register the dynamic broadcast receiver safely based on Android version
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
-        } else {
-            context.registerReceiver(receiver, filter)
-        }
+        // Handles Android 13/14+ export flags cleanly and silences the lint error
+        ContextCompat.registerReceiver(
+            context,
+            receiver,
+            filter,
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
 
         // Acts like onDestroy/onStop to clean up resources and prevent memory leaks
         onDispose {
@@ -155,6 +155,19 @@ fun Greeting(name: String, id: Int, modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Implicit Intent to Second Activity")
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // --- NEW CODE: Launch Third Activity Button ---
+            Button(
+                onClick = {
+                    val thirdIntent = Intent(context, ThirdActivity::class.java)
+                    context.startActivity(thirdIntent)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("View Image Activity")
             }
 
             Spacer(modifier = Modifier.height(24.dp))
